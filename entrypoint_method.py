@@ -19,15 +19,12 @@ def run_method(output_dir, name, fastq_path, parameters):
     os.makedirs(ka_outdir, exist_ok=True)
 
     # Create R1 and R2 files by concatenation
-    fasta_files = [f for f in os.listdir(fastq_path) if f.endswith(('.fastq', '.fastq.gz'))]
-    content = "\n".join(fasta_files)
-    content += f"\n\n"
-    fasta_files.sort()
-    content += "\n".join(fasta_files)
-    content += f"\n\n"
+    fastq_files = [f for f in os.listdir(fastq_path) if f.endswith(('.fastq', '.fastq.gz'))]
+    fastq_files.sort()
+    ka_reads = " ".join(fastq_files)
     
     ka_command = f"kallisto quant -i {ref_idx} -o {ka_outdir} -b 10 -t 32"
-    # ka_command = f" {R1_file} {R2_file}"
+    ka_command = f" {ka_reads}"
 
     content += f"This is the kallisto command\n{ka_command}\n\n"
 
