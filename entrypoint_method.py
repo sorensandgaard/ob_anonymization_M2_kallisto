@@ -23,8 +23,8 @@ def run_method(output_dir, name, fastq_path, parameters):
     fastq_files.sort()
     ka_reads = " ".join(fastq_files)
     
-    ka_command = f"kallisto quant -i {ref_idx} -o {ka_outdir} -b 10 -t 32"
-    ka_command = f" {ka_reads}"
+    ka_command = f"kallisto quant -i {ref_idx} -o {ka_outdir} -b 10 -t 32 "
+    ka_command += f"{ka_reads}"
 
     content = f"This is the kallisto command\n{ka_command}\n\n"
 
