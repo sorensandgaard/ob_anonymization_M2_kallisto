@@ -36,6 +36,15 @@ def run_method(output_dir, name, fastq_path, parameters):
     content += a.stdout
     content += f"\n\n"
 
+    ka_outbam_pos = f"{ka_outdir}/pseudoalignments.bam"
+    ka_sortbam_pos = f"{output_dir}/{name}.possorted.bam"
+    
+    # Sort the resulting bam file
+    sort_command = f"samtools sort -o {ka_sortbam_pos} {ka_outbam.pos}"
+    a = subprocess.run(sort_command.split(),capture_output=True,text=True)
+    content += a.stdout
+    content += f"\n\n"
+
     # Move BAM file to output folder
     # mv_bam_command = f"mv {ka_outdir}/outs/possorted_genome_bam.bam {output_dir}/{name}.possorted.bam"
     # a = subprocess.run(mv_bam_command.split(),capture_output=True,text=True)
