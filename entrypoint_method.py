@@ -20,7 +20,7 @@ def run_method(output_dir, name, fastq_path, parameters):
 
     # Create R1 and R2 files by concatenation
     fasta_files = [f for f in os.listdir(fastq_path) if f.endswith(('.fa', '.fasta'))]
-    content = fasta_files
+    content = fasta_files.join(" ")
     
     ka_command = f"kallisto quant -i {ref_idx} -o ka_outdir -b 10 -t 32"
     # ka_command = f" {R1_file} {R2_file}"
