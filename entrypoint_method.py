@@ -40,7 +40,7 @@ def run_method(output_dir, name, fastq_path, parameters):
     ka_sortbam_pos = f"{output_dir}/{name}.possorted.bam"
     
     # Sort the resulting bam file
-    sort_command = f"samtools sort -o {ka_sortbam_pos} {ka_outbam.pos}"
+    sort_command = f"samtools sort -o {ka_sortbam_pos} {ka_outbam_pos}"
     a = subprocess.run(sort_command.split(),capture_output=True,text=True)
     content += a.stdout
     content += f"\n\n"
