@@ -25,7 +25,7 @@ def run_method(output_dir, name, fastq_path, parameters):
     ka_command = f"kallisto quant -i {ref_idx} -o ka_outdir -b 10 -t 32"
     # ka_command = f" {R1_file} {R2_file}"
 
-    content += f"This is the kallisto command\n{cr_command}\n\n"
+    content += f"This is the kallisto command\n{ka_command}\n\n"
 
     # a = subprocess.run(ka_command.split(),capture_output=True,text=True)
     content += f"Kallisto output: (temporarily left out)\n"
