@@ -28,9 +28,9 @@ def run_method(output_dir, name, fastq_path, parameters):
 
     content = f"This is the kallisto command\n{ka_command}\n\n"
 
-    # a = subprocess.run(ka_command.split(),capture_output=True,text=True)
+    a = subprocess.run(ka_command.split(),capture_output=True,text=True)
     content += f"Kallisto output: (temporarily left out)\n"
-    # content += a.stdout
+    content += a.stdout
     content += f"\n\n"
 
     # Move BAM file to output folder
