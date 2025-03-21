@@ -15,6 +15,7 @@ def run_method(output_dir, name, fastq_path, parameters):
     # Run Kallisto initially
     # ref_dir should point to an .idx file.
     ref_idx = f"01_references/{parameters[0]}/kallisto_transcriptome.idx"
+    gtf_pos = f"01_references/{parameters[0]}/genome.gtf"
     ka_outdir = f"{output_dir}/kallisto_out"
     os.makedirs(ka_outdir, exist_ok=True)
 
@@ -25,6 +26,7 @@ def run_method(output_dir, name, fastq_path, parameters):
     ka_reads = " ".join(fastq_files)
     
     ka_command = f"kallisto quant -i {ref_idx} -o {ka_outdir} -b 10 -t 32 "
+    ka_command += f"--genomebam --gtf {gtf_pos} "
     ka_command += f"{ka_reads}"
 
     content = f"This is the kallisto command\n{ka_command}\n\n"
