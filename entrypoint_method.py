@@ -49,8 +49,7 @@ def run_method(output_dir, name, fastq_path, parameters):
     a = subprocess.run(f"touch {genome_path}".split(),capture_output=True,text=True)
     content += a.stdout
 
-#    fasta_path = f"01_references/{parameters[0]}/genome.fa"
-    fasta_path = f"01_references/{parameters[0]}/Homo_sapiens.GRCh38.cdna.all.fa"
+    fasta_path = f"01_references/{parameters[0]}/genome.fa"
     with open(genome_path, 'w') as file:
         file.write(fasta_path)
 
