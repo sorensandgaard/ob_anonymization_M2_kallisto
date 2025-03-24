@@ -45,27 +45,13 @@ def run_method(output_dir, name, fastq_path, parameters):
     content += a.stdout
     content += f"\n\n"
 
-    # Move BAM file to output folder
-    # mv_bam_command = f"mv {ka_outdir}/outs/possorted_genome_bam.bam {output_dir}/{name}.possorted.bam"
-    # a = subprocess.run(mv_bam_command.split(),capture_output=True,text=True)
-    # content += a.stdout
-    
-    # Move expression matrix to reference-folder for comparison (faster runtime later) 
-    # * Needs edits
-    # cp_matrix_command = f"cp -r {cr_outdir}/outs/filtered_feature_bc_matrix {output_dir}/."
-    # a = subprocess.run(cp_matrix_command.split(),capture_output=True,text=True)
+    genome_path = os.path.join(output_dir, f'{name}.refgenome.txt')
+    a = subprocess.run(f"touch {genome_path}".split(),capture_output=True,text=True)
+    content += a.stdout
 
-    # Remove cellranger folder (the data is not needed downstream, and takes up quite a lot of space)
-    # cleanup_command = f"rm -rf {cr_outdir}"
-    # a = subprocess.run(cleanup_command.split(),capture_output=True,text=True)
-
-    # genome_path = os.path.join(output_dir, f'{name}.refgenome.txt')
-    # a = subprocess.run(f"touch {genome_path}".split(),capture_output=True,text=True)
-    # content += a.stdout
-
-    # fasta_path = f"{ref_dir}/fasta/genome.fa"
-    # with open(genome_path, 'w') as file:
-    #     file.write(fasta_path)
+    fasta_path = f"{ref_dir}/genome.fa"
+    with open(genome_path, 'w') as file:
+        file.write(fasta_path)
 
     content += f"All clear - successfull run\n"
     with open(log_file, 'w') as file:
