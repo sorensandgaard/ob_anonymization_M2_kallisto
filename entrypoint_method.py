@@ -37,7 +37,7 @@ def run_method(output_dir, name, fastq_path, parameters):
     content += f"\n\n"
 
     ka_outbam_pos = f"{ka_outdir}/pseudoalignments.bam"
-    ka_sortbam_pos = f"{output_dir}/{name}.possorted.bam"
+    ka_sortbam_pos = f"{output_dir}/{name}_possorted.bam"
     
     # Sort the resulting bam file
     sort_command = f"samtools sort -o {ka_sortbam_pos} {ka_outbam_pos}"
