@@ -45,6 +45,12 @@ def run_method(output_dir, name, fastq_path, parameters):
     content += a.stdout
     content += f"\n\n"
 
+    # Index the bam file
+    idx_command = f"samtools index {ka_sortbam_pos}"
+    a = subprocess.run(idx_command.split(),capture_output=True,text=True)
+    content += a.stdout
+    content += f"\n\n"
+
     genome_path = os.path.join(output_dir, f'{name}.refgenome.txt')
     a = subprocess.run(f"touch {genome_path}".split(),capture_output=True,text=True)
     content += a.stdout
