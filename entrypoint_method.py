@@ -13,7 +13,7 @@ def run_method(output_dir, name, input_files, parameters):
     log_file = os.path.join(output_dir, f'{name}.log.txt')
 
     raw_reads_path = input_files[0]
-    anon_reads_path = input_files[1]
+    anon_fastq_pos = input_files[1]
     
     # Find reference
     # ref_dir should point to an .idx file.
@@ -25,9 +25,9 @@ def run_method(output_dir, name, input_files, parameters):
     os.makedirs(ka_outdir, exist_ok=True)
 
     # Create R1 and R2 files by concatenation
-    fastq_files = [f for f in os.listdir(anon_reads_path) if f.endswith(('.fastq', '.fastq.gz'))]
+    fastq_files = [f for f in os.listdir(anon_fastq_pos) if f.endswith(('.fastq', '.fastq.gz'))]
     fastq_files.sort()
-    fastq_files = [anon_reads_path + file for file in fastq_files]
+    fastq_files = [anon_fastq_pos + file for file in fastq_files]
     ka_reads = " ".join(fastq_files)
     
     ka_command = f"kallisto quant -i {ref_idx} -o {ka_outdir} -b 10 -t 32 "
@@ -105,7 +105,11 @@ def main():
     anon_reads_path = getattr(args, 'anon.reads.path')
     raw_reads_path = os.path.dirname(R1_input) + f"/"
 
-    input_files = [raw_reads_path,anon_reads_path]
+    # Unpack anonymous read path
+    with open(anon_reads_path, 'r') as infile:
+        anon_fastq_pos = infile.readline().strip()
+
+    input_files = [raw_reads_path,anon_fastq_pos]
 
     run_method(args.output_dir, args.name, input_files, extra_arguments)
 
