@@ -25,9 +25,9 @@ def run_method(output_dir, name, input_files, parameters):
     os.makedirs(ka_outdir, exist_ok=True)
 
     # Create R1 and R2 files by concatenation
-    fastq_files = [f for f in os.listdir(raw_reads_path) if f.endswith(('.fastq', '.fastq.gz'))]
+    fastq_files = [f for f in os.listdir(anon_reads_path) if f.endswith(('.fastq', '.fastq.gz'))]
     fastq_files.sort()
-    fastq_files = [fastq_path + file for file in fastq_files]
+    fastq_files = [anon_reads_path + file for file in fastq_files]
     ka_reads = " ".join(fastq_files)
     
     ka_command = f"kallisto quant -i {ref_idx} -o {ka_outdir} -b 10 -t 32 "
@@ -40,6 +40,46 @@ def run_method(output_dir, name, input_files, parameters):
     content += f"Kallisto output:\n"
     content += a.stdout
     content += f"\n\n"
+
+    ### Run kallisto on the ctrl reads ###
+    ka_outdir = f"{output_dir}/ctrl_kallisto_out"
+    os.makedirs(ka_outdir, exist_ok=True)
+
+    # Create R1 and R2 files by concatenation
+    fastq_files = [f for f in os.listdir(raw_reads_path) if f.endswith(('.fastq', '.fastq.gz'))]
+    fastq_files.sort()
+    fastq_files = [raw_reads_path + file for file in fastq_files]
+    ka_reads = " ".join(fastq_files)
+    
+    ka_command = f"kallisto quant -i {ref_idx} -o {ka_outdir} -b 10 -t 32 "
+    # ka_command += f"--genomebam --gtf {gtf_pos} "
+    ka_command += f"{ka_reads}"
+
+    content = f"This is the control kallisto command\n{ka_command}\n\n"
+
+    a = subprocess.run(ka_command.split(),capture_output=True,text=True)
+    content += f"Ctrl kallisto output:\n"
+    content += a.stdout
+    content += f"\n\n"
+
+    # Convert kallisto outputs to seurat objects
+    # anon_expr_pos = f""
+    # anon_out_pos = f"{output_dir}/{name}_case.rds"
+    # anon_R_command = f"Rscript {script_R_file} {anon_out_pos} {anon_expr_pos}"
+    # a = subprocess.run(anon_R_command.split(),capture_output=True,text=True)
+    # content += f"Anon R command:\n{anon_R_command}\n"
+
+    # ctrl_expr_pos = f""
+    # ctrl_out_pos = f"{output_dir}/{name}_ctrl.rds"
+    # ctrl_R_command = f"Rscript {script_R_file} {ctrl_out_pos} {ctrl_expr_pos}"
+    # a = subprocess.run(ctrl_R_command.split(),capture_output=True,text=True)
+    # content += f"Ctrl R command:\n{ctrl_R_command}\n"
+    
+    # Cleanup unnecessary files
+    # cleanup_command = f"rm -rf {anon_ka_outdir}"
+    # a = subprocess.run(cleanup_command.split(),capture_output=True,text=True)
+    # cleanup_command = f"rm -rf {ctrl_ka_outdir}"
+    # a = subprocess.run(cleanup_command.split(),capture_output=True,text=True)
 
     content += f"All clear - successfull run\n"
     with open(log_file, 'w') as file:
